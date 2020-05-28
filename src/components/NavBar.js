@@ -14,6 +14,7 @@ return (<Navbar expand="lg" style={{backgroundColor: '#03989e'}}>
             <Nav className="mr-auto">
                 <Nav.Link as={Link} to="/liked-posts">Mis Likes</Nav.Link>
                 <Nav.Link as={Link} to="/activity-log">Mi Actividad</Nav.Link>
+                <Nav.Link as={Link} to="/my-posts/:id">Mis Posts</Nav.Link>
                 <Nav.Link as={Link}to="/add-post">Añadir Meme</Nav.Link>
                 <Nav.Link onClick={handleLogout} as={Link} to="/">Cerrar Sesión</Nav.Link>
             </Nav>

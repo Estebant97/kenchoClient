@@ -7,6 +7,7 @@ import ActivityLog from './components/ActivityLog';
 import OpenPost from './components/OpenPost'
 import Feed from './components/Feed';
 import AddPost from './components/AddPost';
+import MyPosts from './components/MyPosts';
 import {
   BrowserRouter as Router,
   Switch,
@@ -26,6 +27,7 @@ function App() {
                       <Route path="/activity-log" component={ActivityLog}/>
                       <Route path="/open-post/:id" component={OpenPost} />
                       <Route path="/add-post" component={AddPost} />
+                      <Route path="/my-posts/:id" component={MyPosts}/>
                       <Route path="/" component={Login}/>
                   </Switch>
               </Router>
