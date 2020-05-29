@@ -105,7 +105,7 @@ class AddPost extends React.Component {
                         <div className="mt-5 py-3">
                             <form onSubmit={this.handleUpload}>
                                 <div className="form-group">
-                                    <label htmlFor="title">Titulo</label>
+                                    <label htmlFor="title">Título</label>
                                     <textarea className="form-control" id="title" rows="3" required></textarea>
                                 </div>
                                 <div className="form-group">

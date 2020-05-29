@@ -1,23 +1,12 @@
 import React from "react";
 import Navbar from "./NavBar";
-import { Button } from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faArrowUp} from "@fortawesome/free-solid-svg-icons";
-import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
 import {faCommentAlt} from "@fortawesome/free-regular-svg-icons";
 import fetchAPI from '../lib/request';
-import { access } from "fs";
 
 //Redirecciona al open post
 //Se le tienen que mandar los props del post para que cargue la img y comments
 
-/*
-function postToOpen(){
-    //this.props.history.push("/open-post");
-    window.location.href='/open-post';
-}
-
-*/
 
 //likedPost = true, agregarlo a los post likeados del usuario
 
@@ -85,11 +74,6 @@ class Feed extends React.Component {
                         <div className="col-sm-9 ml-5">
                             <h1 className="my-5" id="feedTitle">Memes Kencho</h1>
                         </div>
-                            <div className="card text-white bg-dark mb-3" id="usernameCard"style={{maxWidth : "18rem", maxHeight: "5rem"}}>
-                                    <div className="card-body">
-                                        <h5 className="card-title" id="usernameFeed">@username</h5>
-                                    </div>  
-                                </div>
                                 <div className="imagesFeed">
                                      <div >
                                         {posts.map(post=>

@@ -76,12 +76,12 @@ class Login extends React.Component {
                                             <input type="password" placeholder='Contraseña' id="password" style={{width: '70%'}}/>
                                         </div>
                                         <button type="submit" className="btn mt-5" style={{width: '45%', backgroundColor: '#03989e', color: 'white', fontWeight: 'bold', fontSize:20}}>
-                                            Iniciar Sesion
+                                            Iniciar Sesión
                                         </button>
                                     </div>
                                 </form>
                                 <h6 className="text-center">¿Aún no tienes cuenta de Kencho?</h6>
-                                <Link to="/signup" style={{color: '#03989e', fontWeight: 'bold', fontSize: 20}}>Registrate</Link>
+                                <Link to="/signup" style={{color: '#03989e', fontWeight: 'bold', fontSize: 20}}>Regístrate</Link>
                             </div>
                         </div>
                     </div>

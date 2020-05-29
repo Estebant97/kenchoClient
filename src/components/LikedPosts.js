@@ -51,7 +51,7 @@ class LikedPosts extends React.Component {
                 <div className="container">
                     <div className="row">
                         <div className="mt-5 py-3">
-                            <h1>Titulos de posts likeados</h1>
+                            <h1>Títulos de posts likeados</h1>
                            
                            <div className="result">
                                

@@ -1,7 +1,6 @@
 import React from "react";
 import Navbar from "./NavBar";
 import fetchAPI from '../lib/request';
-import { Button } from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowUp} from "@fortawesome/free-solid-svg-icons";
 import {faArrowDown} from "@fortawesome/free-solid-svg-icons";
@@ -14,27 +13,6 @@ function like(){
 function unlike(){
     alert('eliminar de post likeados');
 }
-
-/* FUNCION QUE OBTIENE LA INFORMACION DEL USUARIO QUE HIZO EL COMMENT SE MANDA A LLAMAR EN EL 2 .THEN DE LA FETCH 
-function commenter(userId){
-    const settings = {
-        method: 'GET'
-    }
-   
-    fetchAPI(`/user/${userId}`, settings)
-    .then( response => {
-        return response.json();
-    })
-    .then( data => {
-        this.setState({commenter:data});
-        console.log( data );
-        console.log(this.state);
-    })
-    .catch( err => {
-        console.log(err);
-    })
-}
-*/
 
 class OpenPost extends React.Component {
 
@@ -50,36 +28,6 @@ class OpenPost extends React.Component {
         };
     
       }
-//CHECAR FUNCION PARA AGREGAR UN POST LIKEADO
-/*
-      like=(postOid)=>{
-        alert('agregado a post likeados');
-        let data ={
-            //userOid:userOid,
-            postOid:postOid,
-            liked:true
-        }
-        const settings={
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body : JSON.stringify( data )
-        }
-       
-        fetchAPI('/newLike',settings)
-        .then(response=>{
-            return response.json();
-        })
-        .then(newLikedPosts=>{
-            console.log(newLikedPosts);
-        })
-        .catch( err => {
-            console.log(err);
-        })
-        
-    }
-   */
     componentDidMount(){
         if(!localStorage.getItem("accessToken")){
             this.props.history.push("/login")
@@ -96,10 +44,6 @@ class OpenPost extends React.Component {
         .then( data => {
             
             this.setState({post:data});
-            //console.log( data );
-            //console.log(this.state);
-            //commenter(data.userOid);
-            //commenter(this.props.match.params.userOid);
         })
         .catch( err => {
             console.log(err);
@@ -221,7 +165,6 @@ class OpenPost extends React.Component {
         event.preventDefault();
         const accessToken = localStorage.getItem("accessToken");
         const {post} = this.state;
-        //const {isLiked} = this.state;
         const postid = post[0]._id;
         let liked = false;
         let alert = document.querySelector('.result');
@@ -260,20 +203,6 @@ class OpenPost extends React.Component {
                                     El post no ha sido likeado
                                  </div>`;
         }
-        //console.log(data);
-        /* if(this.state.isLiked === true) {
-        console.log("entro")
-        // set the state of liked to false
-        this.setState({isLiked: false});
-        const settings = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${accessToken}`
-            },
-            body : JSON.stringify( data )
-        };
-        } */
 }
     render() {
         const {post}=this.state;
@@ -322,37 +251,6 @@ class OpenPost extends React.Component {
                                             </div>
                             </div>
                     )}  
-                    {/*
-                <div className="borderImage">
-                                   <p>@username</p>
-                               <br>
-                               </br>
-                                   <img className="images"src={require('../assets/corgi.png')} alt="Corgi" />
-                                    <p>Caption del meme</p>
-                                    <br>
-                                     </br>
-                                   <div>
-                                       <span>
-                                   <FontAwesomeIcon icon={faArrowUp} size='4x' className="arrowUp" onClick={like}>
-                                   </FontAwesomeIcon>
-                                
-                                   <FontAwesomeIcon icon={faArrowDown} size='4x' className="arrowDown" onClick={unlike}>
-                                   </FontAwesomeIcon>
-                                   </span>
-                                  <div>
-                                     <textarea placeholder="Dejar un comentario..."
-                                    onChange={this.handleChange}
-                                    rows={3}
-                                    cols={40}
-                                    />
-                                     </div>
-                                     <Button variant="success" style={{ height: 30 }} >Comentar</Button>
-                                 <p>Cargar todos los comentarios abajo</p>
-                               </div>
-                               </div>
-                               <br>
-                               </br>
-                    */}
                  </div>
             </>
         );

@@ -75,7 +75,7 @@ class Signup extends React.Component {
                                  }}>
                                 <form onSubmit={this.handleRegister}>
                                     <div className="py-5">
-                                        <h1 className="mb-5">Registrate</h1>
+                                        <h1 className="mb-5">Regístrate</h1>
                                         <div className="form-group">
                                             <input type="text" placeholder='Nombre de usuario' id="username" style={{width: '70%'}}/>
                                         </div>
