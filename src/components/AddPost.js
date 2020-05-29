@@ -100,6 +100,7 @@ class AddPost extends React.Component {
 
                 </div>
                 <div className="container">
+                    <div className="containerNewPost">
                     <div className="row">
                         <div className="mt-5 py-3">
                             <form onSubmit={this.handleUpload}>
@@ -119,6 +120,7 @@ class AddPost extends React.Component {
                             </form>
                         </div>
                     </div>
+                </div>
                 </div>
 
             </>

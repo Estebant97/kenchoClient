@@ -301,7 +301,7 @@ class OpenPost extends React.Component {
                                                     <form onSubmit={this.handleComment}>
                                                         <textarea name="userComment" id="comment"/>
                                                             <div>
-                                                                <input type="submit" value="Submit" />
+                                                                <input type="submit" value="Comentar" id="commentButton"/>
                                                             </div>
                                                     </form>
                                                 </div>

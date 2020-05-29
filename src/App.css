@@ -74,3 +74,35 @@
   /*checar el flexbox para hacerlo responsive*/
   margin-left: 200px;
 }
+
+#feedTitle{
+  text-align: center;
+  margin-left: 120px;
+}
+#editCaption{
+  margin:15px;
+}
+#commentButton{
+  background-color:#03889e;
+  color: white;
+  border-radius: 5px;
+
+}
+
+
+@media(min-width: 500px) and (max-width: 990px){
+	.images {
+    height: 280px;
+    width: 300px;
+  
+  }
+  .containerNewPost{
+    margin-left:30px;
+  }
+  #usernameCard{
+    height:50px;
+    width: 200px;
+  }
+ 
+	
+}

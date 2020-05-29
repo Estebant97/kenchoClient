@@ -59,7 +59,7 @@ class ActivityLog extends React.Component {
                     console.log(response);
                 })
                 .then( deleted => {
-                    //console.log(deleted);
+                    window.location.reload();
                     alert.innerHTML += `<div class="alert alert-success" role="alert">
                                         El comentario se ha eliminado correctamente
                                         </div>`;
