@@ -15,6 +15,26 @@ function unlike(){
     alert('eliminar de post likeados');
 }
 
+/* FUNCION QUE OBTIENE LA INFORMACION DEL USUARIO QUE HIZO EL COMMENT SE MANDA A LLAMAR EN EL 2 .THEN DE LA FETCH 
+function commenter(userId){
+    const settings = {
+        method: 'GET'
+    }
+   
+    fetchAPI(`/user/${userId}`, settings)
+    .then( response => {
+        return response.json();
+    })
+    .then( data => {
+        this.setState({commenter:data});
+        console.log( data );
+        console.log(this.state);
+    })
+    .catch( err => {
+        console.log(err);
+    })
+}
+*/
 
 class OpenPost extends React.Component {
 
