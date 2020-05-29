@@ -16,7 +16,7 @@ class ActivityLog extends React.Component {
       componentDidMount(){
         if(!localStorage.getItem("accessToken")){
             this.props.history.push("/login")
-        }
+        } else {
         const accessToken = localStorage.getItem("accessToken");
         const settings = {
             method: 'GET',
@@ -41,6 +41,7 @@ class ActivityLog extends React.Component {
         .catch( err => {
             console.log(err);
         })
+        }
       }    
 
     render() {

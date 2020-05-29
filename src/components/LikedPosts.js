@@ -3,6 +3,11 @@ import Navbar from "./NavBar";
 
 
 class LikedPosts extends React.Component {
+    componentDidMount(){
+        if(!localStorage.getItem("accessToken")){
+            this.props.history.push("/login")
+        }
+    }
     render() {
         return (
             <>

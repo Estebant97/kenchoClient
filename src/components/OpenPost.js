@@ -15,26 +15,6 @@ function unlike(){
     alert('eliminar de post likeados');
 }
 
-/* FUNCION QUE OBTIENE LA INFORMACION DEL USUARIO QUE HIZO EL COMMENT SE MANDA A LLAMAR EN EL 2 .THEN DE LA FETCH 
-function commenter(userId){
-    const settings = {
-        method: 'GET'
-    }
-   
-    fetchAPI(`/user/${userId}`, settings)
-    .then( response => {
-        return response.json();
-    })
-    .then( data => {
-        this.setState({commenter:data});
-        console.log( data );
-        console.log(this.state);
-    })
-    .catch( err => {
-        console.log(err);
-    })
-}
-*/
 
 class OpenPost extends React.Component {
 
@@ -44,12 +24,11 @@ class OpenPost extends React.Component {
      
         this.state = {
           post:[],
-          commenter:[],
+          isLiked:false,
+          //commenter:[],
           
         };
     
-        
-        console.log(this.state);
       }
 //CHECAR FUNCION PARA AGREGAR UN POST LIKEADO
 /*
@@ -80,11 +59,15 @@ class OpenPost extends React.Component {
         })
         
     }
-   */    
+   */
     componentDidMount(){
+        if(!localStorage.getItem("accessToken")){
+            this.props.history.push("/login")
+        }
         const settings = {
             method: 'GET'
         }
+        const accessToken = localStorage.getItem("accessToken");
         //check if its in production 
         fetchAPI(`/postsById/${this.props.match.params.id}`, settings)
         .then( response => {
@@ -93,54 +76,133 @@ class OpenPost extends React.Component {
         .then( data => {
             
             this.setState({post:data});
-            console.log( data );
-            console.log(this.state);
+            //console.log( data );
+            //console.log(this.state);
             //commenter(data.userOid);
             //commenter(this.props.match.params.userOid);
         })
         .catch( err => {
             console.log(err);
         })
-
+        const postOid = this.props.match.params.id;
+        const data = {postOid}
+        const settingsGet = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`
+            },
+            body : JSON.stringify( data )
+        }
+        fetchAPI('/isLiked', settingsGet)
+        .then( response => {
+            return response.json();
+        })
+        .then( liked => {
+            this.setState({isLiked:liked});
+        })
+        .catch( err => {
+            console.log(err);
+        })
         
     }
    
     //SUBMIT DEL FORM CON COMENTARIO
-    /*
-      handleSubmit=(event)=>{
-        
+    
+      handleComment=(event)=>{
         event.preventDefault();
-        console.log(event.currentTarget.userComment.value);
-        const newComment= event.currentTarget.userComment.value;
-        const data={
-            content:newComment,
-            //userOid:,
-            //checar que regresa post.postOid
-            postOid:post.postOid
+        const {post} = this.state;
+        const postOid = post[0]._id;
+        const accessToken = localStorage.getItem("accessToken");
+        const content = document.getElementById('comment').value;
+        const data = {
+            content : content,
+            postOid : postOid
         }
-        const settings={
+        const settings = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`
             },
             body : JSON.stringify( data )
-        }
-        
-        fetchAPI('/newComment',settings)
-        .then(response=>{
+        };
+        fetchAPI('/newComment', settings)
+        .then( response => {
             return response.json();
         })
-
-
-      }
-        
-      */
+        .then( comment => {
+            window.location.reload();
+        })
+        .catch( err => {
+            console.log(err);
+        })
+    }
+    handleLike = (event) => {
+        event.preventDefault();
+        const accessToken = localStorage.getItem("accessToken");
+        const {post} = this.state;
+        //const {isLiked} = this.state;
+        const postid = post[0]._id;
+        let liked = true;
+        let alert = document.querySelector('.result');
+        if(this.state.isLiked === false) {
+        console.log("entro")
+        this.setState({isLiked: true});
+        const settingsGet = {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }
+        fetchAPI('/getLikesByUser', settingsGet)
+        .then(response => {
+            return response.json();
+        })
+        .then( like => {
+                    const data = {
+                        postOid : postid,
+                        liked : liked
+                    }
+                    const settings = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${accessToken}`
+                        },
+                        body : JSON.stringify( data )
+                    };
+                    fetchAPI('/newLike', settings)
+                    .then( response => {
+                        return response.json();
+                    })
+                    .then( liked => {
+                        alert.innerHTML += `<div class="alert alert-success" role="alert">
+                                                        El post ha sido likeado
+                                                        </div>`;
+                        console.log(liked);
+                    })
+                    .catch( err => {
+                        console.log(err);
+                    }) 
+        }) 
+        .catch(err => {
+            console.log(err);
+        }) 
+        } else {
+            alert.innerHTML += `<div class="alert alert-warning" role="alert">
+                                    El post ya ha sido likeado
+                                 </div>`;
+        }
+    }
     render() {
         const {post}=this.state;
-        console.log(post);
         return (
             <>
                 <Navbar></Navbar>
+                <div className="result">
+                    
+                </div>
                 <div className="imagesFeed">
                     {post.map(post=>
                         <div className="borderImage">
@@ -150,16 +212,15 @@ class OpenPost extends React.Component {
                                 <img  className="images" src={post.image} alt={post.title}/>
                                         <p>{post.title}</p>
                                             <span>
-                                            {/*<FontAwesomeIcon icon={faArrowUp} size='3x' className="arrowUp" onClick={()=>this.like(post.postOid)}>*/}
-                                                <FontAwesomeIcon icon={faArrowUp} size='3x' className="arrowUp" >
-                                                </FontAwesomeIcon>
+                                            {/*<FontAwesomeIcon icon={faArrowUp} size='3x' className="arrowUp" onClick={()=>this.like(post._id)}>*/}
+                                                <FontAwesomeIcon icon={faArrowUp} size='3x' className="arrowUp" onClick={this.handleLike}></FontAwesomeIcon>
                                                     <FontAwesomeIcon icon={faArrowDown} size='3x' className="arrowDown"  onClick={unlike}>
                                                     </FontAwesomeIcon>
                                                                     
                                             </span>
                                                 <div>
-                                                    <form onSubmit={this.handleSubmit}>
-                                                        <textarea name="userComment"/>
+                                                    <form onSubmit={this.handleComment}>
+                                                        <textarea name="userComment" id="comment"/>
                                                             <div>
                                                                 <input type="submit" value="Submit" />
                                                             </div>
@@ -174,9 +235,8 @@ class OpenPost extends React.Component {
                                             <div> 
                                                 {post.comments.map(comment=>
                                                     <div>
+                                                         <p> {comment.userOid.username}</p>
                                                          <p>{comment.content}</p>
-                                                         <p>{comment.userOid}</p>
-                                                        
                                                     </div>
                                                     )}
                                                     

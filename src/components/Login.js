@@ -11,6 +11,7 @@ class Login extends React.Component {
     }
     handleLogin = (event) => {
         event.preventDefault();
+        let alert = document.querySelector('.result');
         let email = document.getElementById('email').value;
         let password = document.getElementById('password').value;
         let data = {
@@ -33,7 +34,9 @@ class Login extends React.Component {
             this.props.history.push("/feed");
         })
         .catch( err => {
-            console.log(err);
+            alert.innerHTML += `<div class="alert alert-danger" role="alert">
+                                el usuario y/o contraseña son incorrectos
+                                </div>`
         })
     }
     render () {
@@ -48,6 +51,9 @@ class Login extends React.Component {
                     
                 }}>
                 <NavBar searchVisible={true}/>
+                <div className="result">
+
+                </div>
                 <div className="container">
                     <div className="row">
                         <div className="col-sm-12">
