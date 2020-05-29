@@ -1,8 +1,6 @@
 import React from "react";
 import Navbar from "./NavBar";
-import { Button,Modal,ButtonToolbar } from 'react-bootstrap';
-import DeletePost from "./DeletePost";
-import EditCaption from "./EditCaption";
+import { Button,Modal,Form } from 'react-bootstrap';
 import fetchAPI from '../lib/request';
 
 
@@ -15,7 +13,9 @@ import fetchAPI from '../lib/request';
        
 
         this.state = {
-        posts:[],deletePostModalShow:false,editCaptionModalShow:false,
+        posts:[],
+        deletePostModalShow:false,
+        editCaptionModalShow:false,
         }
        
         console.log(this.state);
@@ -55,14 +55,12 @@ import fetchAPI from '../lib/request';
 
 
 
-      
-      
-      
      
       //Delete post when clicking delete button
       //Hacer confirmación antes de picarle borrar
       //Darle refresh para que ya no salga
-      onDeleteClick=(id)=>{
+      onDeleteClick=id=>event=>{
+          event.preventDefault();
           console.log(id);
           
         const settings = {
@@ -76,6 +74,36 @@ import fetchAPI from '../lib/request';
         .catch( err => {
             console.log(err);
         })
+    }
+
+        //Modificar titulo del meme
+        handleSubmit=id=>event=>{
+            console.log(id);
+            event.preventDefault();
+            const data = {
+                _id : id,
+                title : event.target.newTitle.value,
+            }
+            const settings = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body : JSON.stringify( data )
+            };
+    
+            fetchAPI(`/updatePost/${id}`, settings)
+                        .then( response => {
+                            return response.json();
+                        })
+                        .then( update => {
+                            alert.innerHTML += `<div class="alert alert-success" role="alert">
+                                                El título del post se ha actualizado correctamente
+                                                </div>`;
+                        })
+                        .catch( err => {
+                            console.log(err);
+                        })
 
        
 
@@ -88,6 +116,7 @@ import fetchAPI from '../lib/request';
       render(){
 
           const {posts}=this.state;
+          console.log(posts);
         let deletePostModalClose=()=>this.setState({deletePostModalShow:false});
         let editCaptionModalClose=()=>this.setState({editCaptionModalShow:false});
           return (
@@ -101,15 +130,66 @@ import fetchAPI from '../lib/request';
                             </div>
                                 <img  className="images" src={post.image} alt={post.title}/>
                                         <p>{post.title}</p>
-                                        <Button variant="secondary" onClick={()=>this.setState({editCaptionModalShow:true})}>Editar pie de foto</Button>
+                                        <Button variant="secondary" onClick={()=>this.setState({editCaptionModalShow:true})}>Editar título del meme</Button>
                                         {/*<Button variant="danger" onClick={() => this.onDeleteClick(post._id)}>Eliminar Post</Button>*/}
                                         <Button variant="danger" onClick={()=>this.setState({deletePostModalShow:true})}>Eliminar post</Button>
-                                        <DeletePost
-                                        show={this.state.deletePostModalShow}
-                                        onHide={deletePostModalClose}/>
-                                        <EditCaption
-                                        show={this.state.editCaptionModalShow}
-                                        onHide={editCaptionModalClose}/>
+                                            <Modal  show={this.state.deletePostModalShow}
+                                                onHide={deletePostModalClose}
+                                                size="lg"
+                                                aria-labelledby="contained-modal-title-vcenter"
+                                                centered
+                                                >
+                                                    <Modal.Header closeButton>
+                                                        <Modal.Title id="contained-modal-title-vcenter">
+                                                            Eliminar post
+                                                        </Modal.Title>
+                                                    </Modal.Header>
+                                                        <Modal.Body>
+                                                            ¿Seguro que deseas eliminar este post?
+                                                        </Modal.Body>
+                                                            <Modal.Footer>
+                                                                <Form onSubmit={this.onDeleteClick(post._id)}>
+                                                                <Button variant="danger" type="submit">Eliminar post</Button>
+                                                                <Button onClick={this.props.onHide}>Cerrar</Button>
+                                                                </Form>
+                                                               
+                                                                {/*<Button variant="danger" onClick={() => this.onDeleteClick(post._id)}>Eliminar Post</Button>*/}
+                                                               
+                                                            </Modal.Footer>
+                                            </Modal>
+                                                <Modal show={this.state.editCaptionModalShow}
+                                                onHide={editCaptionModalClose}
+                                                 size="lg"
+                                                aria-labelledby="contained-modal-title-vcenter"
+                                                centered
+                                                >
+                                                    <Modal.Header closeButton>
+                                                        <Modal.Title id="contained-modal-title-vcenter">
+                                                            Editar título del post
+                                                        </Modal.Title>
+                                                    </Modal.Header>
+                                                        <Modal.Body>
+                                                            <div className="container">    
+                                                                <Form onSubmit={this.handleSubmit(post._id)}>
+                                                                    <Form.Group controlId="newTitle">
+                                                                        <Form.Label>Editar título </Form.Label>
+                                                                            <Form.Control
+                                                                            type="text"
+                                                                            name="newTitle"
+                                                                            required
+                                                                            />
+                                                                    </Form.Group>
+                                                                        <Form.Group>
+                                                                            <Button variant="success" type="submit">Guardar cambios</Button>
+                                                                        </Form.Group>
+                                                                </Form>
+                                                            </div>
+                                                        </Modal.Body>
+                                                            <Modal.Footer>
+                                                                <Button onClick={this.props.onHide}>Cerrar</Button>
+                                                            </Modal.Footer>
+                                                    </Modal>
+                                       
                         </div>
                     )}
 

@@ -197,6 +197,7 @@ class OpenPost extends React.Component {
                         return response.json();
                     })
                     .then( liked => {
+                        alert.innerHTML = "";
                         alert.innerHTML += `<div class="alert alert-success" role="alert">
                                                         El post ha sido likeado
                                                         </div>`;
@@ -210,11 +211,70 @@ class OpenPost extends React.Component {
             console.log(err);
         }) 
         } else {
+            alert.innerHTML = "";
             alert.innerHTML += `<div class="alert alert-warning" role="alert">
                                     El post ya ha sido likeado
                                  </div>`;
         }
     }
+    handleUnlike = (event) => {
+        event.preventDefault();
+        const accessToken = localStorage.getItem("accessToken");
+        const {post} = this.state;
+        //const {isLiked} = this.state;
+        const postid = post[0]._id;
+        let liked = false;
+        let alert = document.querySelector('.result');
+        if(this.state.isLiked === true) {
+        console.log("entro")
+        this.setState({isLiked: false});
+        const data = {
+            postOid: postid, 
+            liked : liked
+        }
+        const settings = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`
+            },
+            body : JSON.stringify( data )
+        }
+        fetchAPI('/deleteLike', settings)
+        .then( response => {
+            return response.json()
+        })
+        .then( del => {
+            alert.innerHTML = "";
+            alert.innerHTML += `<div class="alert alert-success" role="alert">
+                                    El post ya no esta likeado
+                                 </div>`;
+        })
+        .catch( err => {
+            console.log( err );
+        })
+
+        } else {
+            alert.innerHTML = "";
+            alert.innerHTML += `<div class="alert alert-warning" role="alert">
+                                    El post no ha sido likeado
+                                 </div>`;
+        }
+        //console.log(data);
+        /* if(this.state.isLiked === true) {
+        console.log("entro")
+        // set the state of liked to false
+        this.setState({isLiked: false});
+        const settings = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`
+            },
+            body : JSON.stringify( data )
+        };
+        } */
+}
     render() {
         const {post}=this.state;
         return (
@@ -234,8 +294,7 @@ class OpenPost extends React.Component {
                                             <span>
                                             {/*<FontAwesomeIcon icon={faArrowUp} size='3x' className="arrowUp" onClick={()=>this.like(post._id)}>*/}
                                                 <FontAwesomeIcon icon={faArrowUp} size='3x' className="arrowUp" onClick={this.handleLike}></FontAwesomeIcon>
-                                                    <FontAwesomeIcon icon={faArrowDown} size='3x' className="arrowDown"  onClick={unlike}>
-                                                    </FontAwesomeIcon>
+                                                    <FontAwesomeIcon icon={faArrowDown} size='3x' className="arrowDown"  onClick={this.handleUnlike}></FontAwesomeIcon>
                                                                     
                                             </span>
                                                 <div>
